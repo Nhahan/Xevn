@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xevn</title>
+<meta name="description" content="Xevn: 한국어를 위해 만든 4B 결정 모델">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: launch-post style — a column of 16:9 chart cards (export-ready SVG), then a comparison table. Single light look by design. */
+:root {
+  --page: #f2f3f5; --canvas: #ffffff; --ink: #0d0f14; --ink-2: #4a505c; --ink-3: #8b919c;
+  --rule: #e6e8ec; --ours: #3a4cf0; --ours-tint: #eef0ff; --rival: #cdd1d8;
+  --sans: "Geist", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+body { background: var(--page); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 48px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+.card { background: var(--canvas); border-radius: 20px; box-shadow: 0 1px 2px rgba(13,15,20,.05), 0 8px 30px rgba(13,15,20,.05); overflow: hidden; min-width: 0; }
+.card svg { display: block; width: 100%; height: auto; }
+.bar-ctl { display: flex; justify-content: flex-end; gap: 8px; padding: 18px 24px 0; }
+.seg { display: inline-flex; background: var(--page); border-radius: 999px; padding: 3px; }
+.seg button { font: 500 13px var(--sans); border: 0; background: transparent; color: var(--ink-2); padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--canvas); color: var(--ink); box-shadow: 0 1px 2px rgba(13,15,20,.12); }
+.seg button:focus-visible { outline: 2px solid var(--ours); outline-offset: 1px; }
+.tbl-card { padding: 40px 44px 36px; display: grid; gap: 20px; }
+.tbl-card h2 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -.02em; }
+.tbl-card p.sub { margin: 4px 0 0; color: var(--ink-2); font-size: 15px; }
+.tbl-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 15px; }
+th, td { padding: 13px 12px; text-align: center; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+thead th { font-weight: 500; color: var(--ink-2); font-size: 14px; vertical-align: bottom; }
+thead th.ours { color: var(--ours); font-weight: 700; }
+tbody th { text-align: left; font-weight: 500; }
+tbody th small { display: block; color: var(--ink-3); font-weight: 400; font-size: 12.5px; }
+td { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+td.ours, th.ours { background: var(--ours-tint); }
+td.best { color: var(--ink); font-weight: 600; }
+tr.sep td, tr.sep th { border-top: 2px solid var(--ink); }
+.fine { color: var(--ink-3); font-size: 12.5px; line-height: 1.6; display: grid; gap: 2px; }
+.fine p { margin: 0; }
+.dl a { color: inherit; }
+@media (max-width: 640px) { .tbl-card { padding: 24px 18px; } .tbl-card h2 { font-size: 22px; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="card"><svg id="s-hero" viewBox="0 0 1600 900" role="img" aria-label="Xevn 소개"></svg></div>
+  <div class="card">
+    <div class="bar-ctl"><div class="seg" role="group" aria-label="지표">
+      <button id="m1" aria-pressed="true">정확도</button><button id="m2" aria-pressed="false">Headline</button>
+    </div></div>
+    <svg id="s-bench" viewBox="0 0 1600 960" role="img" aria-label="벤치마크별 결과"></svg>
+  </div>
+  <div class="card tbl-card">
+    <div>
+      <h2>전체 결과</h2>
+      <p class="sub">굵은 숫자가 각 행의 최고값</p>
+    </div>
+    <div class="tbl-scroll"><table id="tbl"></table></div>
+    <div class="fine">
+      <p>모든 모델 16비트(Decider는 공식 FP16), 같은 요청, 같은 채점. Apple M4 Max.</p>
+      <p>Headline = (Intelligence + Calibration) / 2, JevBench v1.5 방식.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="bar-ctl"><div class="seg" role="group" aria-label="영어 지표">
+      <button id="e1" aria-pressed="true">정확도</button><button id="e2" aria-pressed="false">Headline</button>
+    </div></div>
+    <svg id="s-en" viewBox="0 0 1600 960" role="img" aria-label="영어 벤치마크"></svg>
+  </div>
+  <div class="card tbl-card">
+    <div>
+      <h2>영어 결과</h2>
+      <p class="sub">굵은 숫자가 각 행의 최고값</p>
+    </div>
+    <div class="tbl-scroll"><table id="etbl"></table></div>
+  </div>
+  <div class="card"><svg id="s-quant" viewBox="0 0 1600 760" role="img" aria-label="정밀도별 비교"></svg></div>
+  <div class="card"><svg id="s-qbench" viewBox="0 0 1600 960" role="img" aria-label="벤치마크별 정밀도 비교"></svg></div>
+  <div class="card tbl-card">
+    <div>
+      <h2>정밀도별 결과</h2>
+      <p class="sub">Xevn 6가지 정밀도</p>
+    </div>
+    <div class="tbl-scroll"><table id="qtbl"></table></div>
+    <div class="tbl-scroll"><table id="qbtbl"></table></div>
+    <div class="fine">
+      <p>속도는 HTTP 단일 요청 p50, 세 입력 길이(64토큰 이하, 65~128, 129~256)를 같은 비율로 섞어 측정. Apple M4 Max.</p>
+    </div>
+  </div>
+  <div class="card tbl-card">
+    <div>
+      <h2>다운로드</h2>
+      <p class="sub">Hugging Face</p>
+    </div>
+    <div class="tbl-scroll"><table class="dl">
+      <thead><tr><th style="text-align:left">형식</th><th>용량 (GB)</th><th>저장소</th></tr></thead>
+      <tbody>
+        <tr><th>Transformers 16비트</th><td>9.3</td><td><a href="https://huggingface.co/quevirus/Xevn-4B">Xevn-4B</a></td></tr>
+        <tr><th>MLX 16비트</th><td>8.4</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-bf16">Xevn-4B-MLX-bf16</a></td></tr>
+        <tr><th>MLX 8비트</th><td>4.5</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-8bit">Xevn-4B-MLX-8bit</a></td></tr>
+        <tr><th>MLX 6비트</th><td>3.4</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-6bit">Xevn-4B-MLX-6bit</a></td></tr>
+        <tr><th>MLX 5비트</th><td>2.9</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-5bit">Xevn-4B-MLX-5bit</a></td></tr>
+        <tr><th>MLX 4비트</th><td>2.4</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-4bit">Xevn-4B-MLX-4bit</a></td></tr>
+        <tr><th>MLX 3비트</th><td>1.8</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-MLX-3bit">Xevn-4B-MLX-3bit</a></td></tr>
+        <tr><th>GGUF BF16</th><td>8.7</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-GGUF/blob/main/Xevn-4B-BF16.gguf">Xevn-4B-BF16.gguf</a></td></tr>
+        <tr><th>GGUF Q8_0</th><td>4.6</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-GGUF/blob/main/Xevn-4B-Q8_0.gguf">Xevn-4B-Q8_0.gguf</a></td></tr>
+        <tr><th>GGUF Q6_K</th><td>3.6</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-GGUF/blob/main/Xevn-4B-Q6_K.gguf">Xevn-4B-Q6_K.gguf</a></td></tr>
+        <tr><th>GGUF Q5_K_M</th><td>3.2</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-GGUF/blob/main/Xevn-4B-Q5_K_M.gguf">Xevn-4B-Q5_K_M.gguf</a></td></tr>
+        <tr><th>GGUF Q4_K_M</th><td>2.8</td><td><a href="https://huggingface.co/quevirus/Xevn-4B-GGUF/blob/main/Xevn-4B-Q4_K_M.gguf">Xevn-4B-Q4_K_M.gguf</a></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<footer style="max-width:1240px;margin:0 auto;padding:8px 24px 48px;font-size:14px;color:var(--ink-3)"><a href="https://github.com/Nhahan/Xevn" style="color:inherit">GitHub</a> &nbsp;/&nbsp; <a href="https://huggingface.co/quevirus/Xevn-4B" style="color:inherit">Hugging Face</a></footer>
+<script>
+const C = { ink: '#0d0f14', ink2: '#4a505c', ink3: '#8b919c', rule: '#e6e8ec', ours: '#3a4cf0', rival: '#cdd1d8', tint: '#eef0ff' };
+const SANS = 'Geist, "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif';
+const MONO = '"Geist Mono", ui-monospace, Menlo, monospace';
+const OURS = 'Xevn';
+const ALL = [OURS, 'JevK5', 'Plumb', 'Decider', 'Mica', 'Tev1'];
+const BENCH = [
+  ['KoBEST', '추론과 상식', [89.7,69.7,84.2,74.6,72.7,67.7], [92.0,83.7,84.2,82.0,85.3,87.1]],
+  ['KorMedMCQA', '의료 면허', [69.4,65.5,65.5,64.3,65.8,59.7], [78.7,76.7,74.0,73.1,70.4,67.1]],
+  ['HAE-RAE', '한국 지식', [58.3,56.5,54.9,53.7,54.6,53.2], [70.2,69.3,68.2,63.9,62.1,61.0]],
+  ['Belebele', '독해', [89.0,87.4,86.6,87.2,86.3,87.6], [90.3,89.7,87.7,89.3,86.4,89.2]],
+  ['KMMLU', '전문 지식', [56.3,52.8,55.1,54.1,54.4,47.5], [68.5,63.3,67.8,58.1,58.5,55.3]],
+  ['CSAT-QA', '수능 국어', [68.8,69.4,67.7,66.2,60.5,65.1], [76.4,76.6,77.3,72.3,65.7,74.4]],
+  ['CLIcK', '한국 문화와 언어', [66.5,67.3,67.2,64.9,64.3,62.9], [72.5,74.8,73.1,68.5,68.1,68.6]],
+  ['KMMLU-1035', '전문 지식 2', [50.1,48.0,48.3,51.0,48.2,43.6], [60.1,55.7,57.8,53.3,49.5,49.3]],
+];
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(parent, tag, attrs = {}, text) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text != null) n.textContent = text;
+  parent.appendChild(n); return n;
+}
+const T = (p, x, y, s, a = {}) => el(p, 'text', { x, y, 'font-family': SANS, fill: C.ink, ...a }, s);
+function clear(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); el(svg, 'rect', { width: '100%', height: '100%', fill: '#ffffff' }); }
+function brand(svg, H) {
+  const g = el(svg, 'g');
+  el(g, 'rect', { x: 80, y: H - 70, width: 14, height: 14, rx: 3, fill: C.ours });
+  T(g, 104, H - 58, 'Xevn', { 'font-size': 17, 'font-weight': 600 });
+}
+function header(svg, eyebrow, title, sub) {
+  T(svg, 80, 96, eyebrow, { 'font-size': 18, 'font-weight': 500, fill: C.ours, 'letter-spacing': 1 });
+  T(svg, 80, 150, title, { 'font-size': 46, 'font-weight': 600, 'letter-spacing': -1.2 });
+  if (sub) T(svg, 80, 192, sub, { 'font-size': 20, fill: C.ink2 });
+}
+
+/* One vertical-bar panel: names under bars, values above, ours in brand color. */
+function panel(svg, x, y, w, h, title, sub, rows, o = {}) {
+  const max = o.max ?? 100, n = rows.length;
+  T(svg, x, y, title, { 'font-size': o.ts ?? 26, 'font-weight': 600, 'letter-spacing': -.4 });
+  if (sub) T(svg, x, y + (o.ts ?? 26) * .95, sub, { 'font-size': o.ss ?? 15, fill: C.ink3 });
+  const top = y + (o.headH ?? 70), base = y + h - (o.nameH ?? 44), ph = base - top;
+  const slot = w / n, bw = Math.min(o.bwMax ?? 96, slot * .64);
+  el(svg, 'line', { x1: x, x2: x + w, y1: base + .5, y2: base + .5, stroke: C.rule, 'stroke-width': 1 });
+  rows.forEach(([name, v, extra], i) => {
+    const ours = o.all || name === OURS, cx = x + slot * (i + .5), bh = Math.max(2, v / max * ph), by = base - bh;
+    const g = el(svg, 'g');
+    el(g, 'title', {}, `${name}: ${o.fmt ? o.fmt(v, extra) : v.toFixed(1)}`);
+    el(g, 'path', { d: `M${cx - bw / 2},${base} V${by + 6} q0,-6 6,-6 H${cx + bw / 2 - 6} q6,0 6,6 V${base} Z`, fill: ours ? C.ours : C.rival });
+    const vs = o.vs ?? 22;
+    T(g, cx, by - 12, o.label ? o.label(v) : v.toFixed(1), { 'text-anchor': 'middle', 'font-family': MONO, 'font-size': ours ? vs * 1.12 : vs * .86, 'font-weight': ours ? 600 : 400, fill: ours ? C.ink : C.ink2 });
+    if (extra != null && o.extraLabel) T(g, cx, by - 12 - vs * 1.15, o.extraLabel(extra), { 'text-anchor': 'middle', 'font-family': MONO, 'font-size': 13, fill: C.ink3 });
+    T(g, cx, base + 28, name, { 'text-anchor': 'middle', 'font-size': o.ns ?? 17, 'font-weight': ours ? 600 : 400, fill: ours ? C.ours : C.ink2 });
+  });
+}
+
+/* 1. Hero */
+(function () {
+  const s = document.getElementById('s-hero'); clear(s);
+  T(s, 80, 120, 'KOREAN / OPEN WEIGHTS / 4B', { 'font-size': 18, 'font-weight': 500, fill: C.ours, 'letter-spacing': 2 });
+  T(s, 80, 250, 'Xevn', { 'font-size': 128, 'font-weight': 700, 'letter-spacing': -5 });
+  T(s, 84, 320, '한국어를 위해 만든 4B 결정 모델.', { 'font-size': 36, 'font-weight': 500, fill: C.ink2, 'letter-spacing': -.6 });
+  const stats = [['89.7', '%', 'KoBEST', '2위 Plumb 84.2'], ['69.4', '%', 'KorMedMCQA', '2위 JevK5, Plumb 65.5'], ['2.4', 'GB', '4비트', '모든 벤치마크 16비트 대비 3점 이내']];
+  stats.forEach(([n, u, l, d], i) => {
+    const x = 80 + i * 480, y = 560;
+    el(s, 'line', { x1: x, x2: x + 420, y1: y - 70, y2: y - 70, stroke: C.ink, 'stroke-width': 2 });
+    const t = T(s, x, y + 30, n, { 'font-family': MONO, 'font-size': 88, 'font-weight': 500, 'letter-spacing': -3 });
+    el(t, 'tspan', { 'font-size': 36, fill: C.ink3, dx: 8 }, u);
+    T(s, x, y + 90, l, { 'font-size': 24, 'font-weight': 600 });
+    T(s, x, y + 124, d, { 'font-size': 18, fill: C.ink3 });
+  });
+})();
+
+/* 3. Per-benchmark small multiples */
+function renderBench(m) {
+  const s = document.getElementById('s-bench'); clear(s);
+  const metric = m === 2 ? 'Headline' : '정확도 (%)';
+  header(s, 'BENCHMARKS', '한국어 벤치마크', `${metric}, 4B 이하 공개 모델, 16비트`);
+  const show = [0, 1, 2, 3, 4, 5];
+  const cols = 4, pw = 330, gx = (1440 - pw * cols) / (cols - 1), ph = 330;
+  BENCH.forEach((b, i) => {
+    const c = i % cols, r = Math.floor(i / cols);
+    const rows = show.map(k => [ALL[k], b[m + 1][k]]);
+    panel(s, 80 + c * (pw + gx), 260 + r * (ph + 20), pw, ph, b[0], b[1], rows,
+      { max: 100, ts: 22, ss: 14, vs: 15, ns: 12.5, bwMax: 38, headH: 72, nameH: 36 });
+  });
+
+}
+const b1 = document.getElementById('m1'), b2 = document.getElementById('m2');
+function setM(m) { b1.setAttribute('aria-pressed', m === 1); b2.setAttribute('aria-pressed', m === 2); renderBench(m); renderTable(m); }
+b1.onclick = () => setM(1); b2.onclick = () => setM(2);
+
+/* 5. Table */
+function renderTable(m) {
+  const t = document.getElementById('tbl');
+  const head = `<thead><tr><th style="text-align:left">벤치마크</th>${ALL.map(n => `<th class="${n === OURS ? 'ours' : ''}">${n}</th>`).join('')}</tr></thead>`;
+  const line = (label, sub, vals, cls = '') => {
+    const best = Math.max(...vals);
+    return `<tr class="${cls}"><th>${label}<small>${sub}</small></th>${vals.map((v, k) =>
+      `<td class="${k === 0 ? 'ours ' : ''}${v >= best ? 'best' : ''}">${v.toFixed(1)}</td>`).join('')}</tr>`;
+  };
+  const body = BENCH.map(b => line(b[0], b[1], b[m + 1])).join('');
+  t.innerHTML = head + `<tbody>${body}</tbody>`;
+}
+setM(1);
+
+/* 6. Precision ladder */
+const QUANT = [['16비트',8.4,88],['8비트',4.5,83],['6비트',3.4,82],['5비트',2.9,80],['4비트',2.4,78],['3비트',1.8,77]];
+(function () {
+  const s = document.getElementById('s-quant'); clear(s);
+  header(s, 'PRECISION', '정밀도별 비교', '4비트까지 모든 벤치마크에서 16비트 대비 정확도 3점 이내');
+  const pw = 680, gx = 1440 - pw * 2, o = { all: true, ts: 24, ss: 15, vs: 16, ns: 13, bwMax: 40, headH: 76, nameH: 38 };
+  panel(s, 80, 260, pw, 420, '용량', 'GB', QUANT.map(q => [q[0], q[1]]), { ...o, max: 9 });
+  panel(s, 80 + pw + gx, 260, pw, 420, '속도', 'p50 (ms)', QUANT.map(q => [q[0], q[2]]), { ...o, max: 100, label: v => v.toFixed(0), fmt: v => v + ' ms' });
+  brand(s, 760);
+})();
+document.getElementById('qtbl').innerHTML = '<thead><tr><th style="text-align:left">정밀도</th><th>용량 (GB)</th><th>속도 p50 (ms)</th></tr></thead><tbody>' +
+  QUANT.map(q => `<tr><th>${q[0]}</th><td>${q[1].toFixed(1)}</td><td>${q[2]}</td></tr>`).join('') + '</tbody>';
+const QB = {"KoBEST": {"acc": [89.7, 89.7, 89.6, 89.5, 87.4, 79.7], "h": [92.0, 91.9, 92.4, 91.4, 90.8, 80.6]}, "KorMedMCQA": {"acc": [69.4, 69.1, 69.6, 68.5, 66.4, 50.8], "h": [78.7, 78.7, 79.0, 77.8, 75.5, 65.9]}, "HAE-RAE": {"acc": [58.3, 58.3, 56.5, 57.5, 56.3, 40.2], "h": [70.2, 69.9, 68.9, 68.2, 68.1, 56.9]}, "Belebele": {"acc": [89.0, 88.8, 89.0, 88.7, 87.8, 80.8], "h": [90.3, 90.0, 89.6, 89.2, 89.6, 82.8]}, "KMMLU": {"acc": [56.3, 56.1, 55.8, 56.8, 55.3, 42.3], "h": [68.5, 68.7, 68.1, 69.7, 69.1, 55.8]}, "CSAT-QA": {"acc": [68.8, 68.3, 67.7, 69.4, 66.8, 48.3], "h": [76.4, 76.4, 74.7, 74.5, 74.5, 61.8]}, "CLIcK": {"acc": [66.5, 66.2, 66.9, 65.9, 65.8, 58.8], "h": [72.5, 72.2, 72.6, 73.1, 74.5, 68.0]}, "KMMLU-1035": {"acc": [50.1, 49.9, 50.5, 50.9, 50.1, 41.5], "h": [60.1, 59.9, 60.8, 61.3, 61.1, 53.4]}};
+(function () {
+  const s = document.getElementById('s-qbench'); clear(s);
+  header(s, 'PRECISION', '벤치마크별 정밀도 비교', '정확도 (%), 같은 Xevn의 가중치 정밀도별');
+  const cols = 4, pw = 330, gx = (1440 - pw * cols) / (cols - 1), ph = 330;
+  BENCH.forEach((b, i) => {
+    const c = i % cols, r = Math.floor(i / cols);
+    const rows = QUANT.map((q, k) => [q[0], QB[b[0]].acc[k]]);
+    panel(s, 80 + c * (pw + gx), 260 + r * (ph + 20), pw, ph, b[0], b[1], rows,
+      { all: true, max: 100, ts: 22, ss: 14, vs: 15, ns: 12.5, bwMax: 38, headH: 72, nameH: 36 });
+  });
+})();
+document.getElementById('qbtbl').innerHTML = '<thead><tr><th style="text-align:left">벤치마크 (정확도)</th>' + QUANT.map(q => `<th>${q[0]}</th>`).join('') + '</tr></thead><tbody>' +
+  BENCH.map(b => `<tr><th>${b[0]}<small>${b[1]}</small></th>${QB[b[0]].acc.map(v => `<td>${v.toFixed(1)}</td>`).join('')}</tr>`).join('') + '</tbody>';
+const EN = [["MMLU", "57개 분야 지식", [76.5, 74.8, 74.9, 74.5, 75.4, 71.6], [83.2, 79.7, 78.8, 80.0, 77.3, 74.2]], ["ARC", "초중등 과학", [96.7, 96.7, 96.4, 96.5, 96.5, 95.3], [94.8, 94.9, 87.7, 95.6, 97.0, 94.6]], ["SciQ", "과학 시험", [95.6, 96.6, 95.4, 95.6, 95.3, 95.4], [94.5, 94.2, 88.7, 94.1, 95.5, 94.7]], ["PIQA", "물리 상식", [87.3, 87.2, 86.1, 88.7, 84.3, 84.8], [80.8, 84.6, 83.0, 87.2, 81.5, 79.7]], ["Social IQa", "사회 상식", [76.5, 78.1, 75.3, 76.1, 69.9, 75.9], [79.6, 82.4, 78.1, 75.8, 67.3, 77.6]], ["OBQA", "과학 상식 추론", [88.7, 88.7, 87.7, 91.0, 85.0, 79.3], [84.9, 86.1, 78.6, 89.6, 86.9, 83.2]]];
+function renderEn(m) {
+  const s = document.getElementById('s-en'); clear(s);
+  header(s, 'BENCHMARKS', '영어 벤치마크', `${m === 2 ? 'Headline' : '정확도 (%)'}, 4B 이하 공개 모델, 16비트`);
+  const cols = 3, pw = 420, gx = (1440 - pw * cols) / (cols - 1), ph = 330;
+  EN.forEach((b, i) => {
+    const c = i % cols, r = Math.floor(i / cols);
+    panel(s, 80 + c * (pw + gx), 260 + r * (ph + 20), pw, ph, b[0], b[1], ALL.map((n, k) => [n, b[m + 1][k]]),
+      { max: 100, ts: 22, ss: 14, vs: 15, ns: 13, bwMax: 44, headH: 72, nameH: 36 });
+  });
+  const head = `<thead><tr><th style="text-align:left">벤치마크</th>${ALL.map(n => `<th class="${n === OURS ? 'ours' : ''}">${n}</th>`).join('')}</tr></thead>`;
+  document.getElementById('etbl').innerHTML = head + '<tbody>' + EN.map(b => { const v = b[m + 1], best = Math.max(...v);
+    return `<tr><th>${b[0]}<small>${b[1]}</small></th>${v.map((x, k) => `<td class="${k === 0 ? 'ours ' : ''}${x >= best ? 'best' : ''}">${x.toFixed(1)}</td>`).join('')}</tr>`; }).join('') + '</tbody>';
+  document.getElementById('e1').setAttribute('aria-pressed', m === 1); document.getElementById('e2').setAttribute('aria-pressed', m === 2);
+}
+document.getElementById('e1').onclick = () => renderEn(1); document.getElementById('e2').onclick = () => renderEn(2);
+renderEn(1);
+</script>
+
+</body>
+</html>

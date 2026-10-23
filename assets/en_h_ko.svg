@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" font-family="-apple-system,BlinkMacSystemFont,&quot;Apple SD Gothic Neo&quot;,&quot;Noto Sans KR&quot;,&quot;Segoe UI&quot;,sans-serif">
+<rect width="1600" height="1000" rx="24" fill="#ffffff"/>
+<text x="72" y="96" font-size="44" font-weight="700" fill="#0d0f14" letter-spacing="-1">영어 벤치마크: Headline</text>
+<text x="72" y="138" font-size="20" fill="#6b717c">정확도와 확률 보정을 함께 반영한 점수, 모두 16비트</text>
+<text x="72.0" y="200" font-size="24" font-weight="700" fill="#0d0f14">MMLU</text>
+<text x="72.0" y="226" font-size="15" fill="#8b919c">지식 57개 분야</text>
+<line x1="72.0" x2="492.0" y1="530.5" y2="530.5" stroke="#e6e8ec"/>
+<path d="M87.0,530 V318.7 q0,-5 5,-5 H122.0 q5,0 5,5 V530 Z" fill="#3a4cf0"/>
+<text x="107.0" y="304.7" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">83.2</text>
+<text x="107.0" y="554" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M157.0,530 V327.8 q0,-5 5,-5 H192.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="177.0" y="313.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">79.7</text>
+<text x="177.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M227.0,530 V330.1 q0,-5 5,-5 H262.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="247.0" y="316.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">78.8</text>
+<text x="247.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M297.0,530 V327.0 q0,-5 5,-5 H332.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="317.0" y="313.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">80.0</text>
+<text x="317.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M367.0,530 V334.0 q0,-5 5,-5 H402.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="387.0" y="320.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">77.3</text>
+<text x="387.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M437.0,530 V342.1 q0,-5 5,-5 H472.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="457.0" y="328.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">74.2</text>
+<text x="457.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+<text x="590.0" y="200" font-size="24" font-weight="700" fill="#0d0f14">ARC</text>
+<text x="590.0" y="226" font-size="15" fill="#8b919c">초중등 과학</text>
+<line x1="590.0" x2="1010.0" y1="530.5" y2="530.5" stroke="#e6e8ec"/>
+<path d="M605.0,530 V288.5 q0,-5 5,-5 H640.0 q5,0 5,5 V530 Z" fill="#3a4cf0"/>
+<text x="625.0" y="274.5" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">94.8</text>
+<text x="625.0" y="554" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M675.0,530 V288.3 q0,-5 5,-5 H710.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="695.0" y="274.3" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">94.9</text>
+<text x="695.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M745.0,530 V307.0 q0,-5 5,-5 H780.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="765.0" y="293.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">87.7</text>
+<text x="765.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M815.0,530 V286.4 q0,-5 5,-5 H850.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="835.0" y="272.4" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">95.6</text>
+<text x="835.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M885.0,530 V282.8 q0,-5 5,-5 H920.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="905.0" y="268.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">97.0</text>
+<text x="905.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M955.0,530 V289.0 q0,-5 5,-5 H990.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="975.0" y="275.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">94.6</text>
+<text x="975.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+<text x="1108.0" y="200" font-size="24" font-weight="700" fill="#0d0f14">SciQ</text>
+<text x="1108.0" y="226" font-size="15" fill="#8b919c">과학 시험</text>
+<line x1="1108.0" x2="1528.0" y1="530.5" y2="530.5" stroke="#e6e8ec"/>
+<path d="M1123.0,530 V289.3 q0,-5 5,-5 H1158.0 q5,0 5,5 V530 Z" fill="#3a4cf0"/>
+<text x="1143.0" y="275.3" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">94.5</text>
+<text x="1143.0" y="554" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M1193.0,530 V290.1 q0,-5 5,-5 H1228.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="1213.0" y="276.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">94.2</text>
+<text x="1213.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M1263.0,530 V304.4 q0,-5 5,-5 H1298.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="1283.0" y="290.4" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">88.7</text>
+<text x="1283.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M1333.0,530 V290.3 q0,-5 5,-5 H1368.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="1353.0" y="276.3" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">94.1</text>
+<text x="1353.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M1403.0,530 V286.7 q0,-5 5,-5 H1438.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="1423.0" y="272.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">95.5</text>
+<text x="1423.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M1473.0,530 V288.8 q0,-5 5,-5 H1508.0 q5,0 5,5 V530 Z" fill="#cdd1d8"/>
+<text x="1493.0" y="274.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">94.7</text>
+<text x="1493.0" y="554" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+<text x="72.0" y="600" font-size="24" font-weight="700" fill="#0d0f14">PIQA</text>
+<text x="72.0" y="626" font-size="15" fill="#8b919c">물리 상식</text>
+<line x1="72.0" x2="492.0" y1="930.5" y2="930.5" stroke="#e6e8ec"/>
+<path d="M87.0,930 V724.9 q0,-5 5,-5 H122.0 q5,0 5,5 V930 Z" fill="#3a4cf0"/>
+<text x="107.0" y="710.9" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">80.8</text>
+<text x="107.0" y="954" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M157.0,930 V715.0 q0,-5 5,-5 H192.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="177.0" y="701.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">84.6</text>
+<text x="177.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M227.0,930 V719.2 q0,-5 5,-5 H262.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="247.0" y="705.2" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">83.0</text>
+<text x="247.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M297.0,930 V708.3 q0,-5 5,-5 H332.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="317.0" y="694.3" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">87.2</text>
+<text x="317.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M367.0,930 V723.1 q0,-5 5,-5 H402.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="387.0" y="709.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">81.5</text>
+<text x="387.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M437.0,930 V727.8 q0,-5 5,-5 H472.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="457.0" y="713.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">79.7</text>
+<text x="457.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+<text x="590.0" y="600" font-size="24" font-weight="700" fill="#0d0f14">Social IQa</text>
+<text x="590.0" y="626" font-size="15" fill="#8b919c">사회 상식</text>
+<line x1="590.0" x2="1010.0" y1="930.5" y2="930.5" stroke="#e6e8ec"/>
+<path d="M605.0,930 V728.0 q0,-5 5,-5 H640.0 q5,0 5,5 V930 Z" fill="#3a4cf0"/>
+<text x="625.0" y="714.0" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">79.6</text>
+<text x="625.0" y="954" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M675.0,930 V720.8 q0,-5 5,-5 H710.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="695.0" y="706.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">82.4</text>
+<text x="695.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M745.0,930 V731.9 q0,-5 5,-5 H780.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="765.0" y="717.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">78.1</text>
+<text x="765.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M815.0,930 V737.9 q0,-5 5,-5 H850.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="835.0" y="723.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">75.8</text>
+<text x="835.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M885.0,930 V760.0 q0,-5 5,-5 H920.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="905.0" y="746.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">67.3</text>
+<text x="905.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M955.0,930 V733.2 q0,-5 5,-5 H990.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="975.0" y="719.2" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">77.6</text>
+<text x="975.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+<text x="1108.0" y="600" font-size="24" font-weight="700" fill="#0d0f14">OBQA</text>
+<text x="1108.0" y="626" font-size="15" fill="#8b919c">개방형 과학 상식</text>
+<line x1="1108.0" x2="1528.0" y1="930.5" y2="930.5" stroke="#e6e8ec"/>
+<path d="M1123.0,930 V714.3 q0,-5 5,-5 H1158.0 q5,0 5,5 V930 Z" fill="#3a4cf0"/>
+<text x="1143.0" y="700.3" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0f14">84.9</text>
+<text x="1143.0" y="954" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3a4cf0">Xevn</text>
+<path d="M1193.0,930 V711.1 q0,-5 5,-5 H1228.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="1213.0" y="697.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">86.1</text>
+<text x="1213.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">JevK5</text>
+<path d="M1263.0,930 V730.6 q0,-5 5,-5 H1298.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="1283.0" y="716.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">78.6</text>
+<text x="1283.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Plumb</text>
+<path d="M1333.0,930 V702.0 q0,-5 5,-5 H1368.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="1353.0" y="688.0" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">89.6</text>
+<text x="1353.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Decider</text>
+<path d="M1403.0,930 V709.1 q0,-5 5,-5 H1438.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="1423.0" y="695.1" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">86.9</text>
+<text x="1423.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Mica</text>
+<path d="M1473.0,930 V718.7 q0,-5 5,-5 H1508.0 q5,0 5,5 V930 Z" fill="#cdd1d8"/>
+<text x="1493.0" y="704.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#6b717c">83.2</text>
+<text x="1493.0" y="954" text-anchor="middle" font-size="12.5" font-weight="400" fill="#6b717c">Tev1</text>
+</svg>
